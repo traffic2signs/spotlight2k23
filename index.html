@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='UTF-8'>
+	<meta name='viewport'  content='width=device-width,initial-scale=1.0'>
+    <title>Spotlight</title>
+    <style>
+          *{
+			margin:0;
+			padding:0;
+			font-family:courier new;
+			color:aqua;
+		}
+		.banner{
+			border:aqua 3px solid;
+			width:100%;
+			height:100vh;
+			background-image:linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url('photo-1568119806199-17d9d32e3ae9.jpeg');
+			background-size:cover;
+			background-position:center;
+		}
+		.navbar{ 
+			width:85%;
+			margin:auto;
+			padding:35px;
+			display:flex;
+			align-items:center;
+			justify-content:space-between;
+		}
+		#logo{
+			width:80px;
+		}
+		.content{
+			width:100%;
+			transform:translateY(-50%);
+			text-align:center;
+			color:white;
+		}
+		.content h1{
+			font-size:65px;
+			margin-top:150px;	
+		}
+		.content h1::before{
+		 	content:'WELCOME TO';
+		 	font-size:20px;
+		}
+		.content p{
+			margin:20px auto;
+			font-weight:100;
+			line-height:25px;
+		}
+		button{
+			width:200px;
+			padding:15px 0;
+			text-align:center;
+			margin:20px 10px;
+			border-radius:25px;
+			font-weight:bold;
+			border:2px solid aqua;
+			background:transparent;
+			color:aqua;
+			cursor:pointor;
+			position:relative;
+		}
+		span{
+			background:aqua;
+			height:100%;
+			width:0%;
+			border-radius:25px;
+			position:absolute;
+			left:0;
+			bottom:0;
+			z-index:-1;
+			transition:0.5s;
+		}
+		button:hover span{
+			width:100%;
+		}
+		button:hover{
+			border:none;
+			color:black;
+		}
+		h1{
+			animation:move 0.5s infinite;
+		}
+		@keyframes move{
+		0%{
+			
+			color:transparent;
+		}
+	}
+    </style>
+</head>
+<body>
+	<div class='banner'>
+		<div class='navbar'>
+			<img src='IMG-20231021-WA0001.png'	alt='imagelogo' id='logo'> 
+		</div>
+		<div class='content'>
+				<h1> SPOTLIGHT</h1>
+				<p>Drive safe stay alive</p>
+				<div>
+					<a href='spotlight.html'><button  type='button'>Visit<span></span></button></a>
+					<a href='learn more.html'><button type='button'>learn more<span></span></button></a>
+				</div>
+		</div>
+	</div>
+		
+</body>
+</html>

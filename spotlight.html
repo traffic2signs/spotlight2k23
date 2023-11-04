@@ -1,0 +1,114 @@
+<style>	
+	*{
+		color:aqua;
+		font:20px courier new;
+		background-image:linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url('photo-1568119806199-17d9d32e3ae9.jpeg');
+		background-size:cover;
+		background-repeat:no-repeat;	
+	}
+	#container{
+		width:100%;
+		height:100%;
+		border:aqua 3px solid;
+		display:grid;
+		place-content:center;
+		align-items:center;			
+	}
+	button{
+		position:relative;
+		top:-200px;
+		width:110px;
+		height:30px;
+		color:aqua;
+		border:aqua 3px solid;
+		border-radius:10px;
+	}
+	img{
+		width:100px;
+		height:100px;
+		position:absolute;
+		top:50px;
+		right:50px;
+		border-radius:50px;
+	}
+	#label{
+		background:transparent;
+		position:relative;
+		top:-200px;
+		text-align:center;
+		color:aqua;
+		animation:move 0.5s infinite;
+	}
+	@keyframes move{
+		0%{
+			color:transparent;
+		}
+	}
+	button:hover{
+		background:aqua;
+		color:black;		
+	}
+</style>
+<div id='container'>
+	<div id='label'>Spotlight</div>
+
+	<button type="button" onclick="init()">Start</button>
+	<div id="webcam-container"></div>
+	<div id="label-container"></div>
+	<a href='index.html'><img src='house-logo-hi.png'></a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+<script type="text/javascript">
+    // More API functions here:
+    // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+
+    // the link to your model provided by Teachable Machine export panel
+    const URL = "https://teachablemachine.withgoogle.com/models/6lj_L55i4/";
+
+    let model, webcam, labelContainer, maxPredictions;
+
+    // Load the image model and setup the webcam
+    async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        // load the model and metadata
+        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+        // or files from your local hard drive
+        // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        // Convenience function to setup a webcam
+        const flip = true; // whether to flip the webcam
+        webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        // append elements to the DOM
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
+        labelContainer = document.getElementById("label-container");
+        for (let i = 0; i < maxPredictions; i++) { // and class labels
+            labelContainer.appendChild(document.createElement("div"));
+        }
+    }
+
+    async function loop() {
+        webcam.update(); // update the webcam frame
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+
+    // run the webcam image through the image model
+    async function predict() {
+        // predict can take in an image, video or canvas html element
+        const prediction = await model.predict(webcam.canvas);
+        for (let i = 0; i < maxPredictions; i++) {
+            const classPrediction =
+                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+            labelContainer.childNodes[i].innerHTML = classPrediction;
+        }
+    }
+</script>
